@@ -1,28 +1,25 @@
 import streamlit as st
-from msal import PublicClientApplication
+from msal import ConfidentialClientApplication
 import requests
 
-client_id = '8a020a5d-9708-4fa4-aad8-424f65f3982c'
-client_secret = 'tkg8Q~YwkNZg~rOAOsx1-m4Z5IarINmOJMQoib9f'
-authority = 'https://login.microsoftonline.com/8aeae41b-7510-41db-89ad-800a906ce494'
 endpoint = 'https://graph.microsoft.com/v1.0/me'
-scope = ['https://graph.microsoft.com/User.Read.All']
+scope = ['https://graph.microsoft.com/.default']
 
-app = PublicClientApplication(
-    client_id=client_id,
-    authority=authority
+app = ConfidentialClientApplication(
+    client_id=st.secrets.client_id,
+    authority=st.secrets.authority,
+    client_credential=st.secrets.client_secret
 )
 
 if st.button("ログイン"):
     accounts = app.get_accounts()
-    st.write(accounts)
 
     if accounts:
         result = app.acquire_token_silent(scopes=scope, account=accounts[0])
         st.session_state['access_token'] = result['access_token']
         st.write("ログイン済み")
     else:
-        result = app.acquire_token_interactive(scopes=scope)
+        result = app.acquire_token_for_client(scopes=scope)
         st.session_state['access_token'] = result['access_token']
         st.write("ログインしました")
     st.write(result)
