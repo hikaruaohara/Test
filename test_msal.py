@@ -32,8 +32,8 @@ if st.button("アクセストークンを取得"):
 if st.button("Graph API呼び出し"):
     access_token = st.session_state.access_token
     header = {'Authorization': f'Bearer {access_token}'}
-    response = requests.get(endpoint, headers=header)
-    st.write(response.json())
+    response = requests.get(endpoint, headers=header).json()
+    st.write(f'名前: {response.get("displayName")}\n学籍番号: {response.get("jobTitle")}')
 
 
 logout = '[logout](https://login.microsoftonline.com/common/oauth2/v2.0/logout)'
