@@ -5,7 +5,7 @@ import requests
 endpoint = 'https://graph.microsoft.com/v1.0/me'
 scope = ['user.read']
 
-params = st.experimental_get_query_params().json()
+params = st.experimental_get_query_params()
 
 app = ConfidentialClientApplication(
     client_id=st.secrets.client_id,
